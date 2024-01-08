@@ -15,6 +15,7 @@ export const googleLogin = async () => {
   if (error) console.log('error', error);
 };
 
+// kakao 로그인
 export const kakaoLogin = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'kakao',
@@ -25,10 +26,11 @@ export const kakaoLogin = async () => {
       },
     },
   });
-  if (data) alert('로그인되었습니다');
+  if (data) alert('로그인 되었습니다');
   if (error) console.log('error', error);
 };
 
-export async function logOut() {
+export const logOut = async () => {
   const { error } = await supabase.auth.signOut();
-}
+  alert('로그아웃 되었습니다');
+};
