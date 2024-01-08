@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
 const Home = () => {
-  const router = useRouter()
-  router.replace('main')
-  return null
-}
+  const router = useRouter();
+  router.replace('main');
+  return null;
+};
 
-export default Home
+export default Home;
