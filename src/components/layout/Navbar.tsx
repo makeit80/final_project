@@ -13,6 +13,7 @@ const Navbar = () => {
       <div onClick={() => handleNavigation('/artist')}>Artist</div>
       <div onClick={() => handleNavigation('/community')}>Community</div>
       <div onClick={() => handleNavigation('/login')}>Login</div>
+      <div onClick={() => handleNavigation('/login/signup')}>Signup</div>
     </ScNav>
   );
 };
