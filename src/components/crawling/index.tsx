@@ -36,7 +36,7 @@ function Crawling () {
             const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, jwt)
             await doc.loadInfo();
             const sheet = await doc.sheetsByTitle['Chart']
-            const data: any = await getHtml()
+            const data: any = await getChart()
             const rows = await sheet.getRows()
             if (rows) {
                 sheet.clearRows()
@@ -51,33 +51,45 @@ function Crawling () {
     // addGoogleDoc()
 
     // Crawler
-    const getHtml = async () => {
+    // - Chart
+    const getChart = async () => {
         const cheerio = require('cheerio')
+        const regex = /[^0-9]/g
+
         const chartInfo = new Array();
         const title: string[] = [];
         const artist: string[] = [];
-        console.log('getHTML')
+
+        const artistList = new Array()
+        const artistId: string[] = [];
+        const artistName: string[] = [];
         try {
             const html = await axios.get('https://www.melon.com/chart/');
             const $ = cheerio.load(html.data)
-            $('.ellipsis.rank01 > span > a').each((idx : number, el : any) => {
-                const titleInfo = el.children[0].data;
-                title[idx] = titleInfo;
-            });
-            $('.checkEllipsis').each(function (this: any, idx: number) {
-                const artistInfo = $(this).text();
-                artist[idx] = artistInfo;
-            });
-            for (let i = 0; i < title.length; i++) {
-                chartInfo[i] = {'rank' : i+1, 'title' : title[i], 'artist' : artist[i]}
-            }
-            return chartInfo;
+            // $('.ellipsis.rank01 > span > a').each((idx : number, el : any) => {
+            //     const titleInfo = el.children[0].data;
+            //     title[idx] = titleInfo;
+            // });
+            // $('.checkEllipsis').each(function (this: any, idx: number) {
+            //     const artistInfo = $(this).text();
+            //     artist[idx] = artistInfo;
+            // });
+            $('.checkEllipsis > a').each(function(this: any, idx: number) {
+                const id = $(this).attr("href").replace(regex, "");
+                const name = $(this).text();
+                console.log(idx + id + name);
+            })
+            // for (let i = 0; i < title.length; i++) {
+            //     chartInfo[i] = {'rank' : i+1, 'title' : title[i], 'artist' : artist[i]}
+            // }
+            // return chartInfo;
 
         } catch (err) {
             console.error('axios error', axios)
             console.error(err)
         }
     }
+    getChart()
 
 
 
