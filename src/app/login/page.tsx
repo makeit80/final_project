@@ -1,11 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
-import { googleLogin, kakaoLogin, logOut } from '@/api/auth';
+import React, { useEffect, useState } from 'react';
+import { googleLogin, kakaoLogin } from '@/api/auth';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/api/supabase';
 
 const Login = () => {
+  //user 정보 test
+  useEffect(() => {
+    const userInfo = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      console.log(user);
+    };
+    userInfo();
+  }, []);
+
   const router = useRouter();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -21,7 +32,7 @@ const Login = () => {
     });
     console.log(data);
     if (data.user !== null) router.push('/');
-    if (error) alert('로그인에 실패했습니다');
+    // if (error) alert('로그인에 실패했습니다');
   };
 
   const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +79,6 @@ const Login = () => {
           <button onClick={googleLogin}>Google로 로그인하기</button>
           <button onClick={kakaoLogin}>kakao로 로그인하기</button>
           <button onClick={handleSignupButton}>회원가입</button>
-          <button onClick={logOut}>로그아웃</button>
         </div>
       </form>
     </>
