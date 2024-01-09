@@ -1,53 +1,45 @@
-'use client';
-import React, { useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import React from 'react';
+import {
+  useMutation,
+  useQueryClient,
+  UseMutationOptions,
+} from '@tanstack/react-query';
 import { supabase } from '@/api/supabase';
+import { addLikeartist, getInitialLikes } from '@/api/chartapi';
 
 interface LikeButtonProps {
   postId: number;
-  initialLikes: number;
 }
 
-function likefunc({ postId, initialLikes }: LikeButtonProps) {
-  //   const queryClient = useQueryClient();
-  const [likeCount, setLikeCount] = useState(initialLikes);
+function Likefunc({ postId }: LikeButtonProps) {
+  const queryClient = useQueryClient();
 
-  const handleLikeToggle = async () => {
-    let { data: artists, error } = await supabase
-      .from('artists')
-      .select('like')
-      .eq('id', postId);
-    console.log(artists);
+  const { mutate } = useMutation<void, Error, void, unknown>({
+    mutationFn: async () => {
+      await addLikeartist(postId);
+    },
+    onSuccess: () => {
+      // 성공 시 수행할 작업
+      queryClient.invalidateQueries({ queryKey: ['chart'] });
+    },
+    onError: (context) => {
+      const previousData = context || {};
+      queryClient.setQueryData(['chart'], previousData);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['chart'] });
+    },
+  } as UseMutationOptions<void, Error, void, unknown>);
 
-    if (error) {
-      console.error('좋아요 불러오기 실패', error);
-    }
-
-    if (artists && artists.length > 0) {
-      const currentLike = artists[0].like;
-      setLikeCount(currentLike + 1);
-      console.log(currentLike);
-      try {
-        await supabase.from('artists').upsert([
-          {
-            id: postId,
-            like: likeCount + 1,
-          },
-          console.log('통과'),
-        ]);
-      } catch (error) {
-        console.error('좋아요 토글 실패', error);
-        setLikeCount(currentLike);
-      }
-    }
+  const handleLikeToggle = () => {
+    mutate();
   };
 
   return (
     <>
       <button onClick={handleLikeToggle}>좋아요♡</button>
-      <h1>{likeCount}</h1>
     </>
   );
 }
 
-export default likefunc;
+export default Likefunc;
