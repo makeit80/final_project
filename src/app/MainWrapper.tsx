@@ -7,9 +7,9 @@ type Props = {
 
 function MainWrapper({ children }: Props) {
   return (
-    <Provider>
+    <main>
         {children}
-    </Provider>
+    </main>
   )
 }
 
