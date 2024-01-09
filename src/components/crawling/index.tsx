@@ -4,7 +4,7 @@ import { JWT } from "google-auth-library";
 import credential from "../../../key.json"
 
 
-function Crawling () {
+function Crawling() {
 
 
     // SpreadSheet
@@ -56,15 +56,10 @@ function Crawling () {
     // - Chart
     const getChart = async () => {
         const cheerio = require('cheerio')
-        const regex = /[^0-9]/g
-
         const chartInfo = new Array();
         const title: string[] = [];
         const artist: string[] = [];
 
-        const artistList = new Array()
-        const artistId: string[] = [];
-        const artistName: string[] = [];
         try {
             const html = await axios.get('https://www.melon.com/chart/');
             const $ = cheerio.load(html.data)
@@ -80,19 +75,6 @@ function Crawling () {
             //     chartInfo[i] = {'rank' : i+1, 'title' : title[i], 'artist' : artist[i]}
             // }
             // return chartInfo;
-
-            $('.checkEllipsis > a').each(function(this: any, idx: number) {
-                const id = $(this).attr("href").replace(regex, "");
-                artistId[idx] = id;
-                const name = $(this).text();
-                artistName[idx] = name;
-                console.log(idx + id + name);
-            })
-            for (let i = 0; i < artistId.length; i++) {
-                artistList[i] = {'index': i, 'id': artistId[i], 'artist': artistName[i]}
-            }
-
-
         } catch (err) {
             console.error('axios error', axios)
             console.error(err)
@@ -100,11 +82,40 @@ function Crawling () {
     }
     // getChart()
 
+    const getArtist = async () => {
+        try {
+            const cheerio = require('cheerio')
+            const regex = /[^0-9]/g
 
+            const artistList = new Array()
+            const artistId: string[] = [];
+            const artistName: string[] = [];
+
+            const html = await axios.get('https://www.melon.com/chart/');
+            const $ = cheerio.load(html.data)
+            $('.checkEllipsis > a').each(function (this: any, idx: number) {
+                const id = $(this).attr("href").replace(regex, "");
+                artistId[idx] = id;
+                const name = $(this).text();
+                artistName[idx] = name;
+            })
+            for (let i = 0; i < artistId.length; i++) {
+                artistList[i] = { 'index': i, 'id': artistId[i], 'artist': artistName[i] }
+            }
+            console.log('artistList', artistList)
+            const duplication = artistList.filter((el, i) => {
+                return artistList.findIndex((e) => el.id === e.id) === i
+            })
+            console.log('duplication', duplication)
+        } catch (err) {
+            console.error('axios error', axios)
+            console.error(err)
+        }
+    }
 
     return (
         <div>
-            Crawling  
+            Crawling
         </div>
     )
 }
