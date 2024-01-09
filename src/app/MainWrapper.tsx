@@ -1,4 +1,5 @@
 import React from 'react'
+import Provider from '@/components/layout/Provider'
 
 type Props = {
   children: React.ReactNode
@@ -7,7 +8,7 @@ type Props = {
 function MainWrapper({ children }: Props) {
   return (
     <main>
-      {children}
+        {children}
     </main>
   )
 }
