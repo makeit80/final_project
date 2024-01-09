@@ -7,7 +7,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const provider = ({ children }: Props) => {
+const Provider = ({ children }: Props) => {
   const client = new QueryClient();
   return (
     <QueryClientProvider client={client}>
@@ -17,4 +17,4 @@ const provider = ({ children }: Props) => {
   );
 };
 
-export default provider;
+export default Provider;

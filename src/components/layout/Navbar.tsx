@@ -1,18 +1,29 @@
 'use client';
+import { logOut } from '@/api/auth';
+import { supabase } from '@/api/supabase';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 const Navbar = () => {
   const router = useRouter();
   const handleNavigation = (path: string) => {
     router.push(path);
   };
+  useEffect(() => {
+    supabase.auth.getUserIdentities().then((info) => {
+      if (info) console.log(info);
+    });
+  }, []);
+
+  // 로그인부분은 임시,,! 후에 수정하겠습니다!
   return (
     <ScNav>
       <div onClick={() => handleNavigation('/main')}>Home</div>
       <div onClick={() => handleNavigation('/artist')}>Artist</div>
       <div onClick={() => handleNavigation('/community')}>Community</div>
       <div onClick={() => handleNavigation('/login')}>Login</div>
+      <div onClick={() => handleNavigation('/login/signup')}>Signup</div>
+      <button onClick={logOut}>로그아웃</button>
     </ScNav>
   );
 };
