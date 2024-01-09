@@ -3,8 +3,10 @@ import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
 import credential from "../../../key.json"
 
+
 function Crawling () {
-    
+
+
     // SpreadSheet
     const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
     const GOOGLE_SHEET_ID = '1qnpwCeWn_tvRXrrUGB9Nz6cefHWbnfXR8u6NPcKySW0'
@@ -74,22 +76,29 @@ function Crawling () {
             //     const artistInfo = $(this).text();
             //     artist[idx] = artistInfo;
             // });
-            $('.checkEllipsis > a').each(function(this: any, idx: number) {
-                const id = $(this).attr("href").replace(regex, "");
-                const name = $(this).text();
-                console.log(idx + id + name);
-            })
             // for (let i = 0; i < title.length; i++) {
             //     chartInfo[i] = {'rank' : i+1, 'title' : title[i], 'artist' : artist[i]}
             // }
             // return chartInfo;
+
+            $('.checkEllipsis > a').each(function(this: any, idx: number) {
+                const id = $(this).attr("href").replace(regex, "");
+                artistId[idx] = id;
+                const name = $(this).text();
+                artistName[idx] = name;
+                console.log(idx + id + name);
+            })
+            for (let i = 0; i < artistId.length; i++) {
+                artistList[i] = {'index': i, 'id': artistId[i], 'artist': artistName[i]}
+            }
+
 
         } catch (err) {
             console.error('axios error', axios)
             console.error(err)
         }
     }
-    getChart()
+    // getChart()
 
 
 
