@@ -9,11 +9,11 @@ const Navbar = () => {
   const handleNavigation = (path: string) => {
     router.push(path);
   };
-  useEffect(() => {
-    supabase.auth.getUserIdentities().then((info) => {
-      if (info) console.log(info);
-    });
-  }, []);
+  // useEffect(() => {
+  //   supabase.auth.getUserIdentities().then((info) => {
+  //     if (info) console.log(info);
+  //   });
+  // }, []);
 
   // 로그인부분은 임시,,! 후에 수정하겠습니다!
   return (

@@ -32,7 +32,7 @@ const Login = () => {
     });
     console.log(data);
     if (data.user !== null) router.push('/');
-    // if (error) alert('로그인에 실패했습니다');
+    if (error) alert('로그인에 실패했습니다');
   };
 
   const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
