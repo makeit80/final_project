@@ -1,11 +1,9 @@
-'use client';
+import Crawling from '@/components/crawling';
 
-import { useRouter } from 'next/navigation';
-
-const Home = () => {
-  const router = useRouter();
-  router.replace('main');
-  return null;
-};
-
-export default Home;
+export default function Home() {
+  return (
+    <div>
+      <Crawling />
+    </div>
+  );
+}
