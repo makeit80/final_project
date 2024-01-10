@@ -4,8 +4,8 @@ import {
   useQueryClient,
   UseMutationOptions,
 } from '@tanstack/react-query';
-import { supabase } from '@/api/supabase';
-import { addLikeartist, getInitialLikes } from '@/api/chartapi';
+
+import { addLikeartist } from '@/api/chartapi';
 
 interface LikeButtonProps {
   postId: number;
@@ -18,8 +18,9 @@ function Likefunc({ postId }: LikeButtonProps) {
     mutationFn: async () => {
       await addLikeartist(postId);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       // 성공 시 수행할 작업
+
       queryClient.invalidateQueries({ queryKey: ['chart'] });
     },
     onError: (context) => {

@@ -51,10 +51,21 @@ export const addLikeartist = async (postId: number) => {
   try {
     // 좋아요 증가 요청
     const initialLikes = await getInitialLikes(postId);
-    const { data, error } = await supabase
+
+    //존재하는 데이터 인지 확인
+    const checkData = await supabase
       .from('chart')
-      .upsert([{ rank: postId, like: initialLikes + 1 }])
-      .select('rank');
+      .select('*')
+      .eq('rank', postId);
+    if (checkData.data && checkData.data.length > 0) {
+      // 이미 존재하는 경우, 해당 데이터를 업데이트
+      const { data, error } = await supabase
+        .from('chart')
+        .update({ like: initialLikes + 1 })
+        .eq('rank', postId);
+    } else {
+      console.log('존재하지 않는 데이터');
+    }
   } catch (error) {
     console.log('좋아요 추가 실패', error);
   }
