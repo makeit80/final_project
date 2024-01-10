@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
-import credential from "../../../key.json"
+// import credential from "../../../key.json"
 
 function Crawling () {
     
@@ -9,44 +9,44 @@ function Crawling () {
     const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
     const GOOGLE_SHEET_ID = '1qnpwCeWn_tvRXrrUGB9Nz6cefHWbnfXR8u6NPcKySW0'
 
-    const jwt = new JWT({
-        project_id: credential.project_id,
-        keyId: credential.private_key_id,
-        key: credential.private_key,
-        email: credential.client_email,
-        clientId: credential.client_id,
-        scopes: SCOPES,
-    })
+    // const jwt = new JWT({
+    //     project_id: credential.project_id,
+    //     keyId: credential.private_key_id,
+    //     key: credential.private_key,
+    //     email: credential.client_email,
+    //     clientId: credential.client_id,
+    //     scopes: SCOPES,
+    // })
 
     const loadGoogleDoc = async () => {
-        try {
-            const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, jwt)
-            await doc.loadInfo();
-            const sheet = doc.sheetsById[0]
-            const rows = await sheet.getRows()
-            return rows;
+        // try {
+        //     const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, jwt)
+        //     await doc.loadInfo();
+        //     const sheet = doc.sheetsById[0]
+        //     const rows = await sheet.getRows()
+        //     return rows;
 
-        } catch (err) {
-            console.error("Sheet Load Rows Error:", err)
-        }
+        // } catch (err) {
+        //     console.error("Sheet Load Rows Error:", err)
+        // }
     }
 
     const addGoogleDoc = async () => {
-        try {
-            const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, jwt)
-            await doc.loadInfo();
-            const sheet = await doc.sheetsByTitle['Chart']
-            const data: any = await getHtml()
-            const rows = await sheet.getRows()
-            if (rows) {
-                sheet.clearRows()
-                sheet.addRows(data)
-            } else {
-                sheet.addRows(data)
-            }
-        } catch (err) {
-            console.error("Sheet Load Rows Error:", err)
-        }
+        // try {
+        //     const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, jwt)
+        //     await doc.loadInfo();
+        //     const sheet = await doc.sheetsByTitle['Chart']
+        //     const data: any = await getHtml()
+        //     const rows = await sheet.getRows()
+        //     if (rows) {
+        //         sheet.clearRows()
+        //         sheet.addRows(data)
+        //     } else {
+        //         sheet.addRows(data)
+        //     }
+        // } catch (err) {
+        //     console.error("Sheet Load Rows Error:", err)
+        // }
     }
     // addGoogleDoc()
 
